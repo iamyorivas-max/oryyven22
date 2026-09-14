@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useState } from "react";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { nav } from "@/data/site";
+import { Logo } from "@/components/Logo";
 import { useCart } from "@/components/CartProvider";
 import { trackSearch } from "@/lib/analytics";
 
@@ -39,17 +40,17 @@ export function Header() {
   };
 
   const iconButton =
-    "grid h-10 w-10 place-items-center rounded-full text-charcoal transition hover:bg-blush-soft/70";
+    "grid h-10 w-10 place-items-center rounded-full text-charcoal transition hover:bg-blush-soft";
 
   return (
     <header
       className={`sticky top-0 z-50 transition-shadow duration-300 ${
         scrolled
-          ? "bg-ivory/90 shadow-[0_10px_30px_-24px_rgba(28,26,25,0.6)] backdrop-blur-md"
-          : "bg-ivory/70 backdrop-blur-sm"
+          ? "bg-ivory/95 shadow-[0_10px_30px_-26px_rgba(31,29,29,0.7)] backdrop-blur-md"
+          : "bg-ivory"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <button
           type="button"
           className={`${iconButton} md:hidden`}
@@ -60,21 +61,20 @@ export function Header() {
           <Menu size={20} aria-hidden="true" />
         </button>
 
-        <Link
-          href="/"
-          className="font-display text-2xl font-semibold tracking-[0.3em] text-charcoal"
-          aria-label="Alo — accueil"
-        >
-          ALO
+        <Link href="/" className="shrink-0" aria-label="Alo — accueil">
+          <Logo className="h-8 w-[62px]" />
         </Link>
 
-        <nav aria-label="Navigation principale" className="hidden md:block">
-          <ul className="flex items-center gap-8">
+        <nav
+          aria-label="Navigation principale"
+          className="absolute left-1/2 hidden -translate-x-1/2 md:block"
+        >
+          <ul className="flex items-center gap-9">
             {nav.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
-                  className="text-[13px] font-medium tracking-[0.12em] text-charcoal-soft uppercase transition hover:text-bordeaux"
+                  className="text-[11px] font-semibold tracking-[0.16em] text-charcoal uppercase transition hover:text-bordeaux"
                 >
                   {item.label}
                 </Link>
@@ -93,10 +93,10 @@ export function Header() {
           >
             <Search size={19} aria-hidden="true" />
           </button>
-          <Link href="/compte" className={`${iconButton} hidden sm:grid`} aria-label="Mon compte">
+          <Link href="/compte" className={iconButton} aria-label="Mon compte">
             <User size={19} aria-hidden="true" />
           </Link>
-          <Link href="/favoris" className={`${iconButton} hidden sm:grid`} aria-label="Mes favoris">
+          <Link href="/favoris" className={iconButton} aria-label="Mes favoris">
             <Heart size={19} aria-hidden="true" />
           </Link>
           <button
@@ -106,17 +106,18 @@ export function Header() {
             aria-label={`Ouvrir le panier${hydrated && count > 0 ? ` (${count} article${count > 1 ? "s" : ""})` : ""}`}
           >
             <ShoppingBag size={19} aria-hidden="true" />
-            {hydrated && count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-bordeaux px-1 text-[10px] font-semibold text-white">
-                {count}
-              </span>
-            )}
+            <span
+              className="absolute right-0.5 top-1 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-bordeaux px-1 text-[10px] font-semibold leading-none text-white"
+              aria-hidden="true"
+            >
+              {hydrated ? count : 0}
+            </span>
           </button>
         </div>
       </div>
 
       {searchOpen && (
-        <div className="border-t border-sand/50 bg-ivory/95 backdrop-blur-md animate-fade-in">
+        <div className="border-t border-line bg-ivory/95 backdrop-blur-md animate-fade-in">
           <form
             onSubmit={submitSearch}
             role="search"
@@ -132,11 +133,11 @@ export function Header() {
               onChange={(e) => setTerm(e.target.value)}
               placeholder="Rechercher un sac, un bandeau, une visière…"
               autoFocus
-              className="h-11 flex-1 rounded-full border border-sand bg-white px-4 text-sm outline-none placeholder:text-charcoal-soft/60"
+              className="h-11 flex-1 rounded-full border border-line bg-white px-4 text-sm outline-none placeholder:text-charcoal-soft/60"
             />
             <button
               type="submit"
-              className="h-11 rounded-full bg-charcoal px-5 text-[12px] font-semibold tracking-[0.12em] text-white uppercase"
+              className="h-11 rounded-full bg-bordeaux px-5 text-[12px] font-semibold tracking-[0.12em] text-white uppercase"
             >
               Chercher
             </button>
@@ -155,7 +156,7 @@ export function Header() {
           />
           <div className="absolute inset-y-0 left-0 flex w-[82%] max-w-xs flex-col bg-ivory p-6 shadow-2xl animate-slide-in">
             <div className="mb-8 flex items-center justify-between">
-              <span className="font-display text-xl tracking-[0.3em]">ALO</span>
+              <Logo className="h-7 w-[54px]" />
               <button
                 type="button"
                 className={iconButton}
@@ -172,7 +173,7 @@ export function Header() {
                     <Link
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
-                      className="block rounded-xl px-3 py-4 text-base font-medium tracking-wide text-charcoal transition hover:bg-blush-soft/60"
+                      className="block rounded-xl px-3 py-4 text-base font-medium tracking-wide text-charcoal transition hover:bg-blush-soft"
                     >
                       {item.label}
                     </Link>
@@ -182,7 +183,7 @@ export function Header() {
                   <Link
                     href="/compte"
                     onClick={() => setMenuOpen(false)}
-                    className="block rounded-xl px-3 py-4 text-base font-medium text-charcoal transition hover:bg-blush-soft/60"
+                    className="block rounded-xl px-3 py-4 text-base font-medium text-charcoal transition hover:bg-blush-soft"
                   >
                     Mon compte
                   </Link>
@@ -191,14 +192,14 @@ export function Header() {
                   <Link
                     href="/favoris"
                     onClick={() => setMenuOpen(false)}
-                    className="block rounded-xl px-3 py-4 text-base font-medium text-charcoal transition hover:bg-blush-soft/60"
+                    className="block rounded-xl px-3 py-4 text-base font-medium text-charcoal transition hover:bg-blush-soft"
                   >
                     Mes favoris
                   </Link>
                 </li>
               </ul>
             </nav>
-            <p className="mt-auto rounded-2xl bg-blush-soft/60 p-4 text-sm leading-relaxed text-charcoal-soft">
+            <p className="mt-auto rounded-2xl bg-blush-soft p-4 text-sm leading-relaxed text-charcoal-soft">
               Livraison gratuite au Maroc et paiement à la livraison sur toutes les commandes.
             </p>
           </div>

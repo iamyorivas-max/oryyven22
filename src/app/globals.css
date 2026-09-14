@@ -1,37 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* Palette — univers premium 3D yoga & wellness */
-  --color-ivory: #F7F1E8;
-  --color-ivory-deep: #EFE5D8;
-  --color-blush: #E8B9B4;
-  --color-blush-soft: #F3D5D0;
-  --color-blush-deep: #D89A94;
-  --color-bordeaux: #6E1F2A;
-  --color-bordeaux-deep: #521622;
-  --color-charcoal: #1C1A19;
-  --color-charcoal-soft: #3A3634;
-  --color-sand: #D9C7B2;
-  --color-cream: #EDE3D2;
+  /* Palette relevée sur la maquette */
+  --color-ivory: #FBF8F5;
+  --color-cream: #F7F1EC;
+  --color-blush: #F4DEDE;
+  --color-blush-soft: #FAEDED;
+  --color-blush-deep: #E9C6C6;
+  --color-rose: #E0A9AC;
+  --color-bordeaux: #7B2436;
+  --color-bordeaux-deep: #5E1927;
+  --color-charcoal: #1F1D1D;
+  --color-charcoal-soft: #6B6462;
+  --color-stone: #EADDD3;
+  --color-stone-deep: #D8C5B7;
+  --color-line: #E6DCD5;
 
-  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Helvetica Neue", Arial, sans-serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-logo: ui-rounded, "SF Pro Rounded", "Segoe UI Rounded", "Nunito", system-ui, sans-serif;
 
-  --shadow-podium: 0 40px 80px -30px rgba(110, 31, 42, 0.35);
-  --shadow-float: 0 30px 60px -25px rgba(28, 26, 25, 0.35);
-  --shadow-card: 0 18px 40px -24px rgba(28, 26, 25, 0.4);
-
-  --radius-blob: 46% 54% 38% 62% / 55% 42% 58% 45%;
+  --shadow-float: 0 34px 60px -28px rgba(31, 29, 29, 0.42);
+  --shadow-card: 0 20px 45px -32px rgba(31, 29, 29, 0.5);
+  --shadow-podium: 0 40px 70px -34px rgba(123, 36, 54, 0.3);
 }
 
-:root {
-  color-scheme: light;
-}
+:root { color-scheme: light; }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   background: var(--color-ivory);
@@ -40,7 +36,6 @@ body {
   overflow-x: clip;
 }
 
-/* Accessibilité : focus toujours visible */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--color-bordeaux);
   outline-offset: 3px;
@@ -48,104 +43,104 @@ body {
 }
 
 .skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 100;
-  background: var(--color-bordeaux);
-  color: #fff;
-  padding: 0.75rem 1.25rem;
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--color-bordeaux); color: #fff; padding: 0.75rem 1.25rem;
 }
-.skip-link:focus {
-  left: 0.5rem;
-  top: 0.5rem;
+.skip-link:focus { left: 0.5rem; top: 0.5rem; }
+
+/* Libellé vertical des colonnes latérales (« SMALL ACCESSORIES BIG DIFFERENCE ») */
+.side-label {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  line-height: 1.9;
+  text-transform: uppercase;
+  color: var(--color-rose);
 }
 
-/* ---------- Direction artistique 3D (sculptée en CSS) ---------- */
+/* ---------- Direction artistique 3D ---------- */
 
-/* Fond ivoire chaleureux + halos roses */
-.scene-ivory {
+/* Fond rose sculpté des scènes produit */
+.scene-blush {
   background:
-    radial-gradient(70% 55% at 20% 10%, rgba(243, 213, 208, 0.85) 0%, transparent 60%),
-    radial-gradient(60% 60% at 85% 25%, rgba(232, 185, 180, 0.7) 0%, transparent 65%),
-    radial-gradient(90% 70% at 50% 110%, rgba(217, 199, 178, 0.55) 0%, transparent 70%),
-    var(--color-ivory);
+    radial-gradient(75% 60% at 30% 12%, #FCEFEF 0%, transparent 62%),
+    radial-gradient(70% 70% at 82% 78%, #EFCFCF 0%, transparent 68%),
+    linear-gradient(160deg, #F8E6E6 0%, #F2D8D8 52%, #EBC9CA 100%);
 }
 
-/* Podium minéral rose */
-.podium {
+/* Podium minéral beige */
+.podium-stone {
   background:
-    linear-gradient(180deg, var(--color-blush-soft) 0%, var(--color-blush) 55%, var(--color-blush-deep) 100%);
+    linear-gradient(180deg, #F1E4D8 0%, #E4D4C6 48%, #CFB9A8 100%);
   box-shadow:
-    inset 0 8px 18px rgba(255, 255, 255, 0.55),
-    inset 0 -14px 24px rgba(160, 100, 98, 0.25),
+    inset 0 10px 20px rgba(255, 255, 255, 0.7),
+    inset 0 -16px 26px rgba(150, 122, 100, 0.22),
     var(--shadow-podium);
 }
 
-/* Anneau translucide */
+/* Podium rose (cartes produit) */
+.podium-blush {
+  background: linear-gradient(180deg, #FBEDED 0%, #F0D2D2 55%, #E4BEBF 100%);
+  box-shadow:
+    inset 0 8px 16px rgba(255, 255, 255, 0.65),
+    inset 0 -12px 22px rgba(170, 110, 112, 0.2);
+}
+
+/* Grand anneau translucide */
 .ring-3d {
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background:
-    conic-gradient(from 200deg, rgba(255,255,255,0.55), rgba(232,185,180,0.25), rgba(255,255,255,0.6), rgba(110,31,42,0.12), rgba(255,255,255,0.55));
-  box-shadow:
-    inset 0 0 30px rgba(255, 255, 255, 0.6),
-    0 20px 45px -22px rgba(110, 31, 42, 0.45);
-  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: conic-gradient(
+    from 200deg,
+    rgba(255, 255, 255, 0.6),
+    rgba(232, 196, 196, 0.3),
+    rgba(255, 255, 255, 0.7),
+    rgba(123, 36, 54, 0.1),
+    rgba(255, 255, 255, 0.6)
+  );
+  box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.65), 0 24px 50px -26px rgba(123, 36, 54, 0.4);
   /* Évide le centre : on obtient un anneau et non un disque */
-  -webkit-mask: radial-gradient(closest-side, transparent 64%, #000 65%);
-  mask: radial-gradient(closest-side, transparent 64%, #000 65%);
+  -webkit-mask: radial-gradient(closest-side, transparent 70%, #000 71%);
+  mask: radial-gradient(closest-side, transparent 70%, #000 71%);
 }
 
-/* Forme organique sculptée */
-.blob {
-  border-radius: var(--radius-blob);
-  background: linear-gradient(150deg, var(--color-blush-soft), var(--color-blush) 60%, var(--color-blush-deep));
-  box-shadow:
-    inset 12px 16px 40px rgba(255, 255, 255, 0.6),
-    inset -18px -22px 45px rgba(150, 92, 90, 0.3),
-    var(--shadow-float);
+/* Sphère rose */
+.sphere {
+  background: radial-gradient(circle at 32% 28%, #F7D9DA 0%, #E4A7AA 45%, #C97E84 100%);
+  box-shadow: var(--shadow-float);
 }
 
-/* Ombre douce portée au sol */
+/* Ombre portée au sol */
 .ground-shadow {
-  background: radial-gradient(closest-side, rgba(110, 31, 42, 0.28), transparent 75%);
+  background: radial-gradient(closest-side, rgba(123, 36, 54, 0.26), transparent 76%);
   filter: blur(6px);
 }
 
-/* ---------- Animations légères ---------- */
+/* ---------- Animations ---------- */
 @keyframes levitate {
   0%, 100% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(0, -10px, 0); }
 }
 @keyframes rise {
-  from { opacity: 0; transform: translate3d(0, 22px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes slide-in-right {
   from { transform: translate3d(100%, 0, 0); }
-  to { transform: translate3d(0, 0, 0); }
+  to { transform: none; }
 }
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 .animate-levitate { animation: levitate 6s ease-in-out infinite; will-change: transform; }
 .animate-rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .animate-slide-in { animation: slide-in-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .animate-fade-in { animation: fade-in 0.25s ease both; }
 
-/* Apparition au scroll */
 .reveal {
   opacity: 0;
   transform: translate3d(0, 26px, 0);
   transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
+.reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -157,11 +152,6 @@ body {
   .reveal { opacity: 1; transform: none; }
 }
 
-/* Accordéon FAQ */
-.faq-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
-}
+.faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
 .faq-panel[data-open="true"] { grid-template-rows: 1fr; }
 .faq-panel > div { overflow: hidden; }

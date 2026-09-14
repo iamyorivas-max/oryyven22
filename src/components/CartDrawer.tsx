@@ -61,7 +61,7 @@ export function CartDrawer() {
         tabIndex={-1}
         className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-ivory shadow-2xl outline-none animate-slide-in"
       >
-        <div className="flex items-center justify-between border-b border-sand/70 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-line px-5 py-4">
           <h2 className="text-[13px] font-semibold tracking-[0.16em] text-charcoal uppercase">
             Panier ({count})
           </h2>
@@ -69,14 +69,14 @@ export function CartDrawer() {
             type="button"
             onClick={closeCart}
             aria-label="Fermer le panier"
-            className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-blush-soft/70"
+            className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-blush-soft"
           >
             <X size={20} aria-hidden="true" />
           </button>
         </div>
 
         {threshold > 0 && (
-          <div className="border-b border-sand/70 px-5 py-4">
+          <div className="border-b border-line px-5 py-4">
             <p className="flex items-center gap-2 text-[13px] text-charcoal-soft">
               <Truck size={15} aria-hidden="true" className="text-bordeaux" />
               {remaining > 0 ? (
@@ -89,7 +89,7 @@ export function CartDrawer() {
               )}
             </p>
             <div
-              className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-sand/60"
+              className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-line"
               role="progressbar"
               aria-valuenow={Math.round(progress)}
               aria-valuemin={0}
@@ -117,10 +117,10 @@ export function CartDrawer() {
             </button>
           </div>
         ) : (
-          <ul className="flex-1 divide-y divide-sand/60 overflow-y-auto px-5">
+          <ul className="flex-1 divide-y divide-line overflow-y-auto px-5">
             {lines.map(({ line, product, variant }) => (
               <li key={line.key} className="flex gap-4 py-4">
-                <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-gradient-to-b from-blush-soft/70 to-ivory-deep">
+                <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-gradient-to-b from-blush-soft/70 to-blush">
                   <ProductArt product={product} variantId={variant.id} sizes="80px" />
                 </div>
                 <div className="flex flex-1 flex-col gap-1">
@@ -129,12 +129,12 @@ export function CartDrawer() {
                   <p className="text-sm font-medium text-bordeaux">{formatPrice(product.price)}</p>
 
                   <div className="mt-auto flex items-center justify-between pt-2">
-                    <div className="flex items-center rounded-full border border-sand">
+                    <div className="flex items-center rounded-full border border-line">
                       <button
                         type="button"
                         onClick={() => setQuantity(line.key, line.quantity - 1)}
                         aria-label={`Diminuer la quantité de ${product.name}`}
-                        className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-blush-soft/60"
+                        className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-blush-soft"
                       >
                         <Minus size={14} aria-hidden="true" />
                       </button>
@@ -145,7 +145,7 @@ export function CartDrawer() {
                         type="button"
                         onClick={() => setQuantity(line.key, line.quantity + 1)}
                         aria-label={`Augmenter la quantité de ${product.name}`}
-                        className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-blush-soft/60"
+                        className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-blush-soft"
                       >
                         <Plus size={14} aria-hidden="true" />
                       </button>
@@ -154,7 +154,7 @@ export function CartDrawer() {
                       type="button"
                       onClick={() => removeItem(line.key)}
                       aria-label={`Retirer ${product.name} du panier`}
-                      className="grid h-9 w-9 place-items-center rounded-full text-charcoal-soft transition hover:bg-blush-soft/60 hover:text-bordeaux"
+                      className="grid h-9 w-9 place-items-center rounded-full text-charcoal-soft transition hover:bg-blush-soft hover:text-bordeaux"
                     >
                       <Trash2 size={16} aria-hidden="true" />
                     </button>
@@ -166,7 +166,7 @@ export function CartDrawer() {
         )}
 
         {lines.length > 0 && (
-          <div className="border-t border-sand/70 bg-cream/60 px-5 py-5">
+          <div className="border-t border-line bg-cream px-5 py-5">
             <dl className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <dt className="text-charcoal-soft">Sous-total</dt>
@@ -183,7 +183,7 @@ export function CartDrawer() {
                 <dd className="font-medium text-charcoal">Gratuite au Maroc</dd>
               </div>
             </dl>
-            <p className="mt-3 rounded-xl bg-blush-soft/70 px-3 py-2 text-[12px] text-bordeaux-deep">
+            <p className="mt-3 rounded-xl bg-blush-soft px-3 py-2 text-[12px] text-bordeaux-deep">
               Paiement à la livraison : vous réglez en espèces à réception de votre colis.
             </p>
             <button

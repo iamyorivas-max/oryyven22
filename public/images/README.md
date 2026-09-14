@@ -29,6 +29,7 @@ Le composant `ProductArt` bascule alors sur `next/image` (`object-contain`, cadr
 | `alo-visor.webp` | héros, cartes, section 3D, lifestyle | rendu CSS provisoire |
 | `alo-grip-socks.webp` | héros, cartes, section 3D | rendu CSS provisoire |
 | `lifestyle-studio-ville.webp` | section « Du studio à la ville » | silhouette CSS provisoire |
+| `logo.svg` | header et footer | logotype dessiné en SVG (`src/components/Logo.tsx`) |
 | `og-image.jpg` | Open Graph / Twitter Cards (1200×630) | manquant |
 
 ## Recommandations

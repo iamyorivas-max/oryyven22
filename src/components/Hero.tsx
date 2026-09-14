@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import { products } from "@/data/products";
 import { ProductArt } from "@/components/ProductArt";
 
@@ -8,112 +9,128 @@ function scrollTo(id: string) {
 }
 
 /**
- * Composition 3D du héros : podiums roses, anneaux translucides, petits volumes,
- * ombres portées au sol, produits en lévitation maîtrisée dans leurs couleurs réelles.
- * Chaque produit est un calque indépendant, remplaçable par un visuel HD.
+ * Scène 3D du héros : grand anneau translucide balayant le cadre, podium minéral,
+ * sphère rose, et les quatre produits dans leurs couleurs réelles en lévitation maîtrisée.
  */
-export function HeroScene({ compact = false }: { compact?: boolean }) {
+function HeroScene() {
   const [bag, headband, visor, socks] = products;
 
   return (
-    <div
-      className={`relative mx-auto w-full ${compact ? "max-w-xl" : "max-w-2xl"} aspect-square`}
-      aria-hidden={false}
-    >
-      {/* Halo de fond */}
-      <div className="absolute inset-[6%] rounded-full bg-blush-soft/70 blur-2xl" />
-      {/* Anneaux translucides */}
-      <div className="ring-3d absolute left-[8%] top-[14%] h-[46%] w-[46%] rounded-full" />
-      <div className="ring-3d absolute right-[6%] top-[30%] h-[30%] w-[30%] rounded-full" />
-      {/* Forme organique sculptée */}
-      <div className="blob absolute -left-[4%] bottom-[16%] h-[26%] w-[26%]" />
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Grand anneau translucide */}
+      <div className="ring-3d absolute -right-[14%] top-[-12%] h-[118%] w-[92%] rounded-full" />
+      <div className="ring-3d absolute left-[4%] top-[26%] h-[62%] w-[48%] rounded-full opacity-70" />
 
-      {/* Podium central + sac noir */}
-      <div className="absolute left-1/2 top-[44%] h-[18%] w-[46%] -translate-x-1/2 rounded-[999px] podium" />
-      <div className="absolute left-1/2 top-[62%] h-[6%] w-[34%] -translate-x-1/2 ground-shadow" />
-      <div className="absolute left-1/2 top-[6%] h-[46%] w-[46%] -translate-x-1/2 animate-levitate">
-        <ProductArt product={bag} priority sizes="(max-width: 768px) 60vw, 30vw" />
+      {/* Podium minéral */}
+      <div className="podium-stone absolute bottom-[8%] left-[12%] h-[14%] w-[46%] rounded-[26px]" />
+      <div className="podium-stone absolute bottom-[12%] left-[48%] h-[11%] w-[26%] rounded-[22px] opacity-95" />
+
+      {/* Sac noir, pièce maîtresse posée sur le podium */}
+      <div className="absolute bottom-[20%] left-[15%] h-[56%] w-[40%] animate-levitate">
+        <ProductArt product={bag} priority align="bottom" sizes="(max-width: 1024px) 60vw, 32vw" />
       </div>
+      <div className="ground-shadow absolute bottom-[19%] left-[20%] h-[4%] w-[30%]" />
 
-      {/* Podium gauche + bandeau crème */}
-      <div className="podium absolute left-[4%] top-[70%] h-[12%] w-[30%] rounded-[999px]" />
+      {/* Bandeau crème en lévitation */}
       <div
-        className="absolute left-[6%] top-[44%] h-[28%] w-[26%] animate-levitate"
-        style={{ animationDelay: "-1.4s" }}
+        className="absolute left-[47%] top-[6%] h-[26%] w-[26%] animate-levitate"
+        style={{ animationDelay: "-1.5s" }}
       >
-        <ProductArt product={headband} sizes="(max-width: 768px) 40vw, 20vw" />
+        <ProductArt product={headband} sizes="(max-width: 1024px) 34vw, 18vw" />
       </div>
 
-      {/* Podium droit + visière bordeaux */}
-      <div className="podium absolute right-[4%] top-[66%] h-[12%] w-[30%] rounded-[999px]" />
+      {/* Visière bordeaux */}
       <div
-        className="absolute right-[4%] top-[38%] h-[30%] w-[28%] animate-levitate"
-        style={{ animationDelay: "-2.8s" }}
+        className="absolute right-[8%] top-[24%] h-[26%] w-[30%] animate-levitate"
+        style={{ animationDelay: "-3s" }}
       >
-        <ProductArt product={visor} sizes="(max-width: 768px) 40vw, 20vw" />
+        <ProductArt product={visor} sizes="(max-width: 1024px) 36vw, 18vw" />
       </div>
 
-      {/* Chaussettes blanches en avant-plan */}
+      {/* Chaussettes blanches */}
       <div
-        className="absolute bottom-[2%] left-1/2 h-[26%] w-[24%] -translate-x-1/2 animate-levitate"
-        style={{ animationDelay: "-4.1s" }}
+        className="absolute bottom-[12%] right-[6%] h-[34%] w-[26%] animate-levitate"
+        style={{ animationDelay: "-4.4s" }}
       >
-        <ProductArt product={socks} sizes="(max-width: 768px) 36vw, 18vw" />
+        <ProductArt product={socks} align="bottom" sizes="(max-width: 1024px) 32vw, 16vw" />
       </div>
-      <div className="absolute bottom-[1%] left-1/2 h-[5%] w-[22%] -translate-x-1/2 ground-shadow" />
+      <div className="ground-shadow absolute bottom-[11%] right-[10%] h-[4%] w-[18%]" />
 
-      {/* Petits volumes 3D */}
-      <div className="absolute right-[22%] top-[8%] h-[7%] w-[7%] rounded-full bg-gradient-to-br from-white to-blush shadow-[var(--shadow-float)]" />
-      <div className="absolute left-[20%] top-[4%] h-[5%] w-[5%] rounded-[30%] bg-gradient-to-br from-blush-soft to-blush-deep shadow-[var(--shadow-float)]" />
-      <div className="absolute bottom-[24%] right-[14%] h-[6%] w-[6%] rounded-full bg-gradient-to-br from-white to-sand shadow-[var(--shadow-float)]" />
+      {/* Sphère rose et petits volumes */}
+      <div className="sphere absolute bottom-[22%] left-[52%] h-[12%] w-[12%] rounded-full" />
+      <div className="sphere absolute right-[34%] top-[10%] h-[5%] w-[5%] rounded-full opacity-80" />
     </div>
   );
 }
 
 export function Hero() {
   return (
-    <section className="scene-ivory relative overflow-hidden" aria-labelledby="hero-title">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pb-24 lg:pt-16">
-        <div className="order-2 text-center animate-rise lg:order-1 lg:text-left">
-          <p className="text-[11px] font-semibold tracking-[0.3em] text-bordeaux uppercase">
+    <section className="relative bg-ivory" aria-labelledby="hero-title">
+      <div className="mx-auto grid max-w-[1600px] lg:grid-cols-[minmax(0,46%)_minmax(0,54%)]">
+        {/* Colonne éditoriale */}
+        <div className="order-2 flex flex-col justify-center px-4 py-12 animate-rise sm:px-8 lg:order-1 lg:py-24 lg:pl-[max(2rem,calc((100vw-1440px)/2+2rem))] lg:pr-12">
+          <p className="text-[10px] font-semibold leading-[2] tracking-[0.26em] text-charcoal-soft uppercase">
             Plus qu’un accessoire
+            <br />
+            Un art de vivre
           </p>
+
           <h1
             id="hero-title"
-            className="font-display mt-4 text-[clamp(2.75rem,10vw,5.5rem)] font-semibold leading-[0.92] tracking-tight text-charcoal"
+            className="font-display mt-5 text-[clamp(3rem,8vw,5.25rem)] font-bold leading-[0.94] tracking-[-0.03em] text-charcoal"
           >
             MOVE
             <br />
-            DIFFERENT
+            <span className="text-bordeaux">DIFFERENT</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-charcoal-soft sm:text-lg lg:mx-0">
-            Les essentiels qui donnent du style à chaque mouvement.
+
+          <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-charcoal-soft sm:text-base">
+            Les essentiels qui donnent du style
+            <br className="hidden sm:inline" /> à chaque mouvement.
           </p>
 
-          <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center lg:justify-start">
+          <div className="mt-8 flex flex-col items-start gap-3">
             <button
               type="button"
               onClick={() => scrollTo("essentiels")}
-              className="min-h-12 rounded-full bg-bordeaux px-8 py-3.5 text-[12px] font-semibold tracking-[0.16em] text-white uppercase transition hover:bg-bordeaux-deep active:scale-[0.98]"
+              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-bordeaux px-7 py-3.5 text-[11px] font-semibold tracking-[0.16em] text-white uppercase transition hover:bg-bordeaux-deep active:scale-[0.99] sm:w-auto"
             >
               Découvrir la collection
+              <ArrowRight size={15} aria-hidden="true" />
             </button>
             <button
               type="button"
               onClick={() => scrollTo("essentiels")}
-              className="min-h-12 rounded-full border border-charcoal/25 px-8 py-3.5 text-[12px] font-semibold tracking-[0.16em] text-charcoal uppercase transition hover:border-charcoal hover:bg-white/60 active:scale-[0.98]"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-md border border-charcoal/25 bg-white px-7 py-3.5 text-[11px] font-semibold tracking-[0.16em] text-charcoal uppercase transition hover:border-charcoal active:scale-[0.99] sm:w-auto"
             >
               Voir les 4 essentiels
             </button>
           </div>
 
-          <p className="mt-6 text-[13px] text-charcoal-soft">
-            Livraison gratuite au Maroc · Paiement à la livraison
-          </p>
+          <ul className="mt-10 flex flex-wrap items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-rose uppercase">
+            <li>Yoga</li>
+            <li aria-hidden="true">×</li>
+            <li>Bien-être</li>
+            <li aria-hidden="true">×</li>
+            <li>Au quotidien</li>
+          </ul>
         </div>
 
-        <div className="order-1 animate-rise lg:order-2">
+        {/* Scène 3D */}
+        <div className="scene-blush relative order-1 aspect-[4/3] w-full animate-rise lg:order-2 lg:aspect-auto lg:min-h-[640px]">
           <HeroScene />
+          <p
+            className="side-label absolute right-5 top-10 hidden text-right lg:block"
+            aria-hidden="true"
+          >
+            Small
+            <br />
+            accessories
+            <br />
+            big
+            <br />
+            difference
+          </p>
         </div>
       </div>
     </section>

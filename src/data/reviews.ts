@@ -5,45 +5,41 @@
  */
 export type Review = {
   id: string;
-  firstName: string;
+  name: string;
   city: string;
   rating: number;
   verified: boolean;
-  product: string;
   text: string;
 };
 
 export const reviews: Review[] = [
   {
     id: "r1",
-    firstName: "Salma",
+    name: "Sarah K.",
     city: "Casablanca",
     rating: 5,
     verified: true,
-    product: "Alo Tote Bag",
-    text: "Le sac tient vraiment tout : tapis, gourde et ordinateur. La toile ne se déforme pas après trois mois d'utilisation quotidienne.",
+    text: "Une qualité incroyable ! Le tote est spacieux et élégant, je l’utilise tous les jours.",
   },
   {
     id: "r2",
-    firstName: "Imane",
+    name: "Inès M.",
     city: "Rabat",
     rating: 5,
     verified: true,
-    product: "Alo Non-Slip Grip Socks",
-    text: "Les picots accrochent parfaitement, même en chien tête en bas. Je ne glisse plus du tout et le lavage n'abîme rien.",
+    text: "Confortable, stylé et pratique. Le headband reste bien en place même pendant les séances intenses !",
   },
   {
     id: "r3",
-    firstName: "Nadia",
+    name: "Nora A.",
     city: "Marrakech",
     rating: 5,
     verified: true,
-    product: "Alo Visor",
-    text: "Commandée avec paiement à la livraison, reçue en deux jours. La visière est légère et la couleur bordeaux est superbe en vrai.",
+    text: "Livraison rapide et service au top. Les chaussettes sont super confortables et le visor est magnifique !",
   },
 ];
 
 export const reviewSummary = {
   average: 4.9,
-  total: reviews.length > 0 ? 450 : 0,
+  total: 423,
 };

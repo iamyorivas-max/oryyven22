@@ -44,7 +44,7 @@ export function MobileBuyBar() {
   const hasItems = hydrated && count > 0;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-sand/70 bg-ivory/95 px-4 py-3 backdrop-blur-md sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-ivory/95 px-4 py-3 backdrop-blur-md sm:hidden">
       {hasItems ? (
         <button
           type="button"

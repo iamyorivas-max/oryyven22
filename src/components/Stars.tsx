@@ -11,7 +11,7 @@ export function Stars({ rating, size = 14 }: { rating: number; size?: number }) 
           className={
             i <= Math.round(rating)
               ? "fill-bordeaux text-bordeaux"
-              : "fill-transparent text-sand"
+              : "fill-transparent text-line"
           }
         />
       ))}

@@ -4,11 +4,10 @@ import type { Product } from "@/data/products";
 /**
  * Rendu du visuel produit.
  *
- * — Si `product.image` est défini, le fichier de /public/images/ est utilisé tel quel
- *   (cadrage via object-fit / object-position, aucune retouche).
- * — Sinon, un rendu 3D sculpté en CSS prend le relais, dans la couleur réelle
- *   de la variante sélectionnée. Chaque bloc `art` est remplaçable indépendamment
- *   par un visuel HD sans toucher au reste du code.
+ * — Si `product.image` est défini, le fichier de /public/images/ est utilisé tel quel.
+ * — Sinon, un rendu 3D sculpté en SVG prend le relais, dans la couleur réelle de la
+ *   variante sélectionnée. Chaque produit est un calque indépendant, remplaçable par
+ *   un visuel HD sans toucher au reste du code.
  */
 export function ProductArt({
   product,
@@ -33,13 +32,14 @@ export function ProductArt({
         sizes={sizes}
         priority={priority}
         loading={priority ? undefined : "lazy"}
-        className={align === "bottom" ? "object-contain object-bottom" : "object-contain object-center"}
+        className={
+          align === "bottom" ? "object-contain object-bottom" : "object-contain object-center"
+        }
       />
     );
   }
 
-  const variant =
-    product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+  const variant = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
 
   return (
     <div
@@ -52,6 +52,20 @@ export function ProductArt({
       <ArtShape art={product.art} color={variant.swatch} />
     </div>
   );
+}
+
+const wordmark = {
+  fontFamily: "var(--font-logo)",
+  fontWeight: 500,
+  letterSpacing: "-0.02em",
+} as const;
+
+/** Le logo apposé sur le produit doit rester lisible sur toutes les couleurs. */
+function inkFor(color: string) {
+  const hex = color.replace("#", "");
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6 ? "#1F1D1D" : "#FBF8F5";
 }
 
 function ArtShape({ art, color }: { art: Product["art"]; color: string }) {
@@ -67,87 +81,138 @@ function ArtShape({ art, color }: { art: Product["art"]; color: string }) {
   }
 }
 
-const glow = "rgba(255,255,255,0.35)";
-
-/** Sac tote — corps structuré + anses */
+/** Tote bag : toile structurée, deux anses droites, logo centré. */
 function BagArt({ color }: { color: string }) {
+  const ink = inkFor(color);
   return (
-    <svg viewBox="0 0 200 200" className="h-[78%] w-[78%] drop-shadow-[0_18px_26px_rgba(28,26,25,0.28)]" aria-hidden="true">
+    <svg
+      viewBox="0 0 200 200"
+      className="h-[86%] w-[86%] drop-shadow-[0_20px_28px_rgba(31,29,29,0.3)]"
+      aria-hidden="true"
+    >
       <defs>
         <linearGradient id="bagBody" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.95" />
-          <stop offset="45%" stopColor={color} />
-          <stop offset="100%" stopColor="#000" stopOpacity="0.55" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.88" />
+          <stop offset="42%" stopColor={color} />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.5" />
         </linearGradient>
       </defs>
-      <path d="M62 62h76a10 10 0 0 1 10 9l8 86a12 12 0 0 1-12 13H56a12 12 0 0 1-12-13l8-86a10 10 0 0 1 10-9Z" fill="url(#bagBody)" />
-      <path d="M62 62h76a10 10 0 0 1 10 9l1 8H51l1-8a10 10 0 0 1 10-9Z" fill={glow} opacity="0.25" />
-      <path d="M76 66V50a24 24 0 0 1 48 0v16" fill="none" stroke={color} strokeWidth="9" strokeLinecap="round" />
-      <path d="M76 66V50a24 24 0 0 1 48 0v16" fill="none" stroke={glow} strokeWidth="3" strokeLinecap="round" opacity="0.5" />
-      <rect x="86" y="120" width="28" height="8" rx="4" fill={glow} opacity="0.3" />
+      {/* Anses */}
+      <path d="M74 62V44a12 12 0 0 1 24 0v18" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" />
+      <path d="M102 62V44a12 12 0 0 1 24 0v18" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" />
+      {/* Corps de la toile */}
+      <path d="M46 62h108a6 6 0 0 1 6 6v90a6 6 0 0 1-6 6H46a6 6 0 0 1-6-6V68a6 6 0 0 1 6-6Z" fill="url(#bagBody)" />
+      {/* Pli supérieur */}
+      <path d="M46 62h108a6 6 0 0 1 6 6v6H40v-6a6 6 0 0 1 6-6Z" fill="#fff" opacity="0.12" />
+      <text x="100" y="126" textAnchor="middle" fill={ink} fontSize="30" style={wordmark}>
+        alo
+      </text>
     </svg>
   );
 }
 
-/** Bandeau large en maille côtelée */
+/** Bandeau large, forme bombée, logo sur la face. */
 function HeadbandArt({ color }: { color: string }) {
+  const ink = inkFor(color);
   return (
-    <svg viewBox="0 0 200 200" className="h-[76%] w-[76%] drop-shadow-[0_16px_24px_rgba(28,26,25,0.22)]" aria-hidden="true">
+    <svg
+      viewBox="0 0 200 200"
+      className="h-[80%] w-[80%] drop-shadow-[0_18px_26px_rgba(31,29,29,0.22)]"
+      aria-hidden="true"
+    >
       <defs>
         <linearGradient id="bandBody" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fff" stopOpacity="0.6" />
-          <stop offset="30%" stopColor={color} />
-          <stop offset="100%" stopColor="#000" stopOpacity="0.35" />
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
+          <stop offset="40%" stopColor={color} />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.12" />
         </linearGradient>
       </defs>
-      <path d="M100 42c34 0 62 22 62 46 0 12-7 20-18 20-14 0-18-14-44-14s-30 14-44 14c-11 0-18-8-18-20 0-24 28-46 62-46Z" fill="url(#bandBody)" />
-      <g opacity="0.28" stroke="#000" strokeWidth="2" strokeLinecap="round">
-        <path d="M62 76 58 100" /><path d="M78 66 74 96" /><path d="M100 62v32" />
-        <path d="M122 66l4 30" /><path d="M138 76l4 24" />
+      {/* Face avant du bandeau */}
+      <path d="M44 108c0-30 25-50 56-50s56 20 56 50v18c0 8-6 12-14 10-12-4-26-6-42-6s-30 2-42 6c-8 2-14-2-14-10v-18Z" fill="url(#bandBody)" />
+      {/* Arête supérieure */}
+      <path d="M44 110c0-30 25-50 56-50s56 20 56 50" fill="none" stroke="#fff" strokeOpacity="0.55" strokeWidth="3" />
+      {/* Nervures de la maille */}
+      <g opacity="0.16" stroke="#000" strokeWidth="2" strokeLinecap="round">
+        <path d="M64 86v40" /><path d="M80 74v50" /><path d="M120 74v50" /><path d="M136 86v40" />
       </g>
-      <path d="M100 42c34 0 62 22 62 46" fill="none" stroke="#fff" strokeOpacity="0.5" strokeWidth="3" />
+      <text x="100" y="106" textAnchor="middle" fill={ink} fontSize="24" style={wordmark}>
+        alo
+      </text>
     </svg>
   );
 }
 
-/** Visière : bandeau + casquette courbée */
+/** Visière : bandeau frontal + brim incurvé, logo sur le bandeau. */
 function VisorArt({ color }: { color: string }) {
+  const ink = inkFor(color);
   return (
-    <svg viewBox="0 0 200 200" className="h-[76%] w-[76%] drop-shadow-[0_16px_26px_rgba(28,26,25,0.26)]" aria-hidden="true">
+    <svg
+      viewBox="0 0 200 200"
+      className="h-[82%] w-[82%] drop-shadow-[0_18px_28px_rgba(31,29,29,0.26)]"
+      aria-hidden="true"
+    >
       <defs>
         <linearGradient id="visorBrim" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor={color} />
-          <stop offset="100%" stopColor="#000" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.55" />
+        </linearGradient>
+        <linearGradient id="visorBand" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.32" />
+          <stop offset="100%" stopColor={color} />
         </linearGradient>
       </defs>
-      <path d="M30 118c0-30 30-52 70-52s70 22 70 52c0 8-8 12-16 9-18-7-34-11-54-11s-36 4-54 11c-8 3-16-1-16-9Z" fill="url(#visorBrim)" />
-      <path d="M52 92c14-10 30-15 48-15s34 5 48 15" fill="none" stroke="#fff" strokeOpacity="0.45" strokeWidth="4" strokeLinecap="round" />
-      <path d="M46 122c16-7 34-11 54-11s38 4 54 11l3 13c-18-8-37-12-57-12s-39 4-57 12Z" fill={color} opacity="0.85" />
-      <ellipse cx="100" cy="70" rx="10" ry="5" fill="#fff" opacity="0.25" />
+      {/* Bandeau frontal, profil bas */}
+      <path d="M54 110c0-22 20-38 46-38s46 16 46 38v6H54v-6Z" fill="url(#visorBand)" />
+      {/* Arête haute du bandeau (la visière est ouverte sur le dessus) */}
+      <path d="M56 100c4-18 21-30 44-30s40 12 44 30" fill="none" stroke="#fff" strokeOpacity="0.4" strokeWidth="2.5" />
+      {/* Brim : crescent projeté vers l’avant, plus étroit que sur un chapeau */}
+      <path d="M36 120c0-5 5-8 11-8h106c6 0 11 3 11 8 0 13-24 21-64 21s-64-8-64-21Z" fill="url(#visorBrim)" />
+      <path d="M46 116h108c-2 9-22 15-54 15s-52-6-54-15Z" fill="#fff" opacity="0.07" />
+      <text x="100" y="104" textAnchor="middle" fill={ink} fontSize="20" style={wordmark}>
+        alo
+      </text>
     </svg>
   );
 }
 
-/** Chaussettes antidérapantes : couleur du tissu + picots toujours noirs */
+/** Paire de chaussettes : tissu dans la couleur choisie, picots antidérapants contrastés. */
 function SocksArt({ color }: { color: string }) {
-  const isDark = color.toLowerCase() === "#1c1a19";
-  const gripColor = isDark ? "#EDE3D2" : "#1C1A19";
+  const ink = inkFor(color);
+  const grip = inkFor(color);
   return (
-    <svg viewBox="0 0 200 200" className="h-[78%] w-[78%] drop-shadow-[0_16px_24px_rgba(28,26,25,0.22)]" aria-hidden="true">
+    <svg
+      viewBox="0 0 200 200"
+      className="h-[86%] w-[86%] drop-shadow-[0_18px_26px_rgba(31,29,29,0.22)]"
+      aria-hidden="true"
+    >
       <defs>
         <linearGradient id="sockBody" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#fff" stopOpacity="0.7" />
-          <stop offset="35%" stopColor={color} />
-          <stop offset="100%" stopColor="#000" stopOpacity="0.28" />
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.75" />
+          <stop offset="40%" stopColor={color} />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.22" />
         </linearGradient>
       </defs>
-      <path d="M70 38h34a8 8 0 0 1 8 8v56c0 10 5 15 14 20l20 11a20 20 0 0 1-18 36l-42-22c-16-9-24-24-24-42V46a8 8 0 0 1 8-8Z" fill="url(#sockBody)" />
-      <rect x="62" y="38" width="50" height="14" rx="7" fill={color} />
-      <rect x="62" y="38" width="50" height="14" rx="7" fill="#000" opacity="0.12" />
-      <g fill={gripColor}>
-        <circle cx="104" cy="132" r="4" /><circle cx="118" cy="140" r="4" />
-        <circle cx="98" cy="148" r="4" /><circle cx="114" cy="156" r="4" />
-        <circle cx="130" cy="150" r="4" /><circle cx="128" cy="164" r="4" />
+      {/* Chaussette arrière */}
+      <g opacity="0.9" transform="translate(-20 6) scale(0.94)">
+        <path d="M68 40h30a6 6 0 0 1 6 6v52c0 9 4 14 12 18l20 10a17 17 0 0 1-15 30l-30-15c-15-8-23-23-23-40V46a6 6 0 0 1 6-6Z" fill="url(#sockBody)" />
+        <rect x="62" y="40" width="42" height="12" rx="6" fill={color} />
+        <rect x="62" y="40" width="42" height="12" rx="6" fill="#000" opacity="0.1" />
+      </g>
+      {/* Chaussette avant */}
+      <g transform="translate(24 0)">
+        <path d="M68 40h30a6 6 0 0 1 6 6v52c0 9 4 14 12 18l20 10a17 17 0 0 1-15 30l-30-15c-15-8-23-23-23-40V46a6 6 0 0 1 6-6Z" fill="url(#sockBody)" />
+        <rect x="62" y="40" width="42" height="12" rx="6" fill={color} />
+        <rect x="62" y="40" width="42" height="12" rx="6" fill="#000" opacity="0.1" />
+        <text x="84" y="82" textAnchor="middle" fill={ink} fontSize="17" style={wordmark}>
+          alo
+        </text>
+        {/* Picots antidérapants */}
+        <g fill={grip}>
+          <circle cx="92" cy="128" r="3.4" /><circle cx="105" cy="134" r="3.4" />
+          <circle cx="88" cy="142" r="3.4" /><circle cx="101" cy="148" r="3.4" />
+          <circle cx="116" cy="142" r="3.4" /><circle cx="113" cy="156" r="3.4" />
+          <circle cx="99" cy="161" r="3.4" /><circle cx="126" cy="152" r="3.4" />
+        </g>
       </g>
     </svg>
   );
